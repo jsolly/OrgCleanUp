@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Data Table</title>
+      <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Table Style</title>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+</head>
+
+<body>
+<div class="table-title">
+<h3>Current Status of Org</h3>
+</div>
+<table class="table-fill">
+<thead>
+<tr>
+    <th class="text-left">Item Title</th>
+    <th class="text-left">Item Details Page</th>
+    <th class="text-left">Item ID</th>
+    <th class="text-left">Item Type</th>
+    <th class="text-left">Item Problems</th>
+</tr>
+</thead>
+<tbody class="table-hover">
+{% for super_item in super_items %}
+<tr>
+    <td class="text-left">{{super_item.unconstructed_obj.title}}</td>
+    <td style="cursor:pointer" onclick="location.href='{{gis._url+'/home/item.html?id='+super_item.unconstructed_obj.id}}'"><a class="LN1 LN2 LN3 LN4 LN5" href="{{gis._url+'/home/item.html?id='+super_item.unconstructed_obj.id}}" target="_blank">link</a></td>
+    <td class="text-left">{{super_item.unconstructed_obj.id}}</td>
+    <td class="text-left">{{super_item.unconstructed_obj.type}}</td>
+    <td class="text-left"><p>{{super_item.problems}}</p>
+    {% for layer in super_item.layers %}
+    <p>layer {{loop.index}} {{layer.problems}}</p>
+    {% endfor %}
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+  </body>
+</body>
+</html>
