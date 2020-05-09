@@ -93,11 +93,11 @@ if __name__ == "__main__":
     USERNAME = SUPER_ITEM.GIS_OBJ.users.me.username
     #ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:('Feature Service' OR 'Map Service') owner:{USERNAME}", max_items=10, outside_org=False)
     #ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:'Web Map' owner:{USERNAME}", max_items=20, outside_org=False)
-    ITEMS = SUPER_ITEM.GIS_OBJ.content.advanced_search(f"type:('Feature Service' OR 'Map Service') OR type:'Web Map' OR type:Dashboard owner:{USERNAME}", max_items=2000)['results']
+    ITEMS = SUPER_ITEM.GIS_OBJ.content.advanced_search(f"type:('Feature Service' OR 'Map Service') OR type:'Web Map' OR type:Dashboard owner:{USERNAME}", max_items=2_000)['results']
     print(f"I found {len(ITEMS)} items")
     #ITEMS = [SUPER_ITEM.GIS_OBJ.content.get(itemid='')] 
     #ITEMS = helper.get_items_from_folder(gis=SUPER_ITEM.GIS_OBJ, folder="Broken_Old_Depreciated_Data")
-    #ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:Dashboard owner: "USERNAME"", max_items=100000, outside_org=False)
+    #ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:Dashboard owner: "USERNAME"", max_items=10_0000, outside_org=False)
 
     for ITEM in ITEMS:
         if ITEM.type not in SuperItem.known_item_types:
