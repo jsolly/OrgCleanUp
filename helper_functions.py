@@ -36,7 +36,7 @@ def process_super_webmap_item(webmap_item_):
     if all_layers:
         for layer in all_layers:
             if "url" not in layer:
-                continue  # Might want to handle these seperately. They have no url, so idk what to do. This happens with things like map notes
+                continue  # ClientSide Layers
             super_layer = SuperItem(layer)
             if super_layer.constructed_obj:
                 super_layer = process_super_layer(super_layer)
@@ -79,7 +79,7 @@ def process_super_webscene_item(super_webscene_item):  # needs work
 
     for layer in all_layers:  # Multiprocessing?
         if "url" not in layer:
-            continue  # Might want to handle these seperately. They have no url, so idk what to do. This happens with things like map notes
+            continue  # ClientSide Layers
         super_webscene_layer = SuperItem(layer)
         if super_webscene_layer.problems:
             super_webscene_item.layers.append(super_webscene_layer)

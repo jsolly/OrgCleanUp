@@ -1,7 +1,8 @@
 import time
 import argparse
-import asyncio
-from functools import wraps
+
+# import asyncio
+# from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from GitHub.OrgCleanUp.super_item import SuperItem
 import GitHub.OrgCleanUp.helper_functions as helper
@@ -15,6 +16,8 @@ from arcgis import gis
 #     return wrapped
 
 # @async_process_item
+
+
 def process_item(index, item):
     print(f"I've just started working on item {index} with itemid {item.itemid}")
 
@@ -68,11 +71,11 @@ def serialize_org_report(super_items):
 
 
 def get_items_from_folders(
-    gis, folders: list, item_types=None
+    gis_obj, folders: list, item_types=None
 ) -> list:  # folder=None returns the root folder
     all_items = []
     for folder in folders:
-        folder_items = gis.users.me.items(folder=folder)
+        folder_items = gis_obj.users.me.items(folder=folder)
         all_items.extend(folder_items)
 
     if item_types:
@@ -104,7 +107,8 @@ if __name__ == "__main__":
         verify_cert=False,
     )
     USERNAME = SUPER_ITEM.GIS_OBJ.users.me.username
-    # ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:('Feature Service' OR 'Map Service') owner:{USERNAME}", max_items=10, outside_org=False)
+    # ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:('Feature Service' OR 'Map Service')\
+    # owner:{USERNAME}", max_items=10, outside_org=False)
     # ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:'Web Map' owner:{USERNAME}", max_items=20, outside_org=False)
     ITEMS = SUPER_ITEM.GIS_OBJ.content.advanced_search(
         f"type:('Feature Service' OR 'Map Service') OR type:'Web Map' OR type:Dashboard owner:{USERNAME}",
@@ -113,16 +117,34 @@ if __name__ == "__main__":
     print(f"I found {len(ITEMS)} items")
     # ITEMS = [SUPER_ITEM.GIS_OBJ.content.get(itemid='')]
     # ITEMS = helper.get_items_from_folder(gis=SUPER_ITEM.GIS_OBJ, folder="Broken_Old_Depreciated_Data")
-    # ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:Dashboard owner: "USERNAME"", max_items=10_0000, outside_org=False)
+    # ITEMS = SUPER_ITEM.GIS_OBJ.content.search(f"type:Dashboard owner:"USERNAME"", max_items=1000, outside_org=False)
 
     for ITEM in ITEMS:
         if ITEM.type not in SuperItem.known_item_types:
             print(ITEM.type)
 
     FILTERED_ITEMS = [ITEM for ITEM in ITEMS if ITEM.type in SUPER_ITEM.supported_items]
-    # IGNORED_ITEM_IDS = [ITEM.id for ITEM in get_items_from_folders(gis=SUPER_ITEM.GIS_OBJ, folders=['_Trash_Can', 'Error_Route', 'Secured_Services', 'Vector_Tile_Layers', 'Basemaps'])]
-    # IGNORED_ITEM_IDS + ['99170654fe3e4bc7be95771de76b6a2a', '6f56ece8eef7473a9bbab065c14ec58b','4bb1f590f3ca48baa5ab1205ab6e629f']
-    # SUPER_FILTERED_ITEMS = [ITEM for ITEM in FILTERED_ITEMS if ITEM.id not in IGNORED_ITEM_IDS]
+    # IGNORED_ITEM_IDS = [
+    #     ITEM.id
+    #     for ITEM in get_items_from_folders(
+    #         gis=SUPER_ITEM.GIS_OBJ,
+    #         folders=[
+    #             "_Trash_Can",
+    #             "Error_Route",
+    #             "Secured_Services",
+    #             "Vector_Tile_Layers",
+    #             "Basemaps",
+    #         ],
+    #     )
+    # ]
+    # IGNORED_ITEM_IDS + [
+    #     "99170654fe3e4bc7be95771de76b6a2a",
+    #     "6f56ece8eef7473a9bbab065c14ec58b",
+    #     "4bb1f590f3ca48baa5ab1205ab6e629f",
+    # ]
+    # SUPER_FILTERED_ITEMS = [
+    #     ITEM for ITEM in FILTERED_ITEMS if ITEM.id not in IGNORED_ITEM_IDS
+    # ]
     print(f"I'm going to work on {len(FILTERED_ITEMS)} items")
     START_TIME = time.time()
     process_org_sequentially(FILTERED_ITEMS)
