@@ -4,8 +4,8 @@ import argparse
 # import asyncio
 # from functools import wraps
 from jinja2 import Environment, FileSystemLoader
-from GitHub.OrgCleanUp.super_item import SuperItem
-import GitHub.OrgCleanUp.helper_functions as helper
+from super_item import SuperItem
+import helper_functions as helper
 from arcgis import gis
 
 # need to check for no features
@@ -124,27 +124,27 @@ if __name__ == "__main__":
             print(ITEM.type)
 
     FILTERED_ITEMS = [ITEM for ITEM in ITEMS if ITEM.type in SUPER_ITEM.supported_items]
-    # IGNORED_ITEM_IDS = [
-    #     ITEM.id
-    #     for ITEM in get_items_from_folders(
-    #         gis=SUPER_ITEM.GIS_OBJ,
-    #         folders=[
-    #             "_Trash_Can",
-    #             "Error_Route",
-    #             "Secured_Services",
-    #             "Vector_Tile_Layers",
-    #             "Basemaps",
-    #         ],
-    #     )
-    # ]
-    # IGNORED_ITEM_IDS + [
-    #     "99170654fe3e4bc7be95771de76b6a2a",
-    #     "6f56ece8eef7473a9bbab065c14ec58b",
-    #     "4bb1f590f3ca48baa5ab1205ab6e629f",
-    # ]
-    # SUPER_FILTERED_ITEMS = [
-    #     ITEM for ITEM in FILTERED_ITEMS if ITEM.id not in IGNORED_ITEM_IDS
-    # ]
+    IGNORED_ITEM_IDS = [
+        ITEM.id
+        for ITEM in get_items_from_folders(
+            gis=SUPER_ITEM.GIS_OBJ,
+            folders=[
+                "_Trash_Can",
+                "Error_Route",
+                "Secured_Services",
+                "Vector_Tile_Layers",
+                "Basemaps",
+            ],
+        )
+    ]
+    IGNORED_ITEM_IDS + [
+        "99170654fe3e4bc7be95771de76b6a2a",
+        "6f56ece8eef7473a9bbab065c14ec58b",
+        "4bb1f590f3ca48baa5ab1205ab6e629f",
+    ]
+    SUPER_FILTERED_ITEMS = [
+        ITEM for ITEM in FILTERED_ITEMS if ITEM.id not in IGNORED_ITEM_IDS
+    ]
     print(f"I'm going to work on {len(FILTERED_ITEMS)} items")
     START_TIME = time.time()
     process_org_sequentially(FILTERED_ITEMS)
